@@ -167,3 +167,36 @@ function createTracker(subjectName, passingScore = 60) {
 
   const englishTracker = createTracker("English", 55);
   englishTracker(60);
+
+//When we create mathTracker and englishTracker,
+//createTracker() runs twice. 
+// Each time, it creates a brand new "safe" (new count, total, highest, lowest variables) 
+//and returns a function that has exclusive access to that specific "safe". 
+//That's why mathTracker and englishTracker maintain completely separate states 
+//and don't interfere with each other. 
+//JavaScript keeps these variables alive in memory 
+//because the returned inner functions still need to use them,
+//otherwise those variables would be deleted.
+
+//Bonus
+//all concepts
+function printStudentReport(name, exam, homework, attendance, bonus){
+    let finalScore = calculateWeightedScore(exam, homework, bonus);
+    if (!isValidScore(finalScore)) {
+        console.log("Error: Could not generate report due to invalid score.");
+        return;
+    }
+    let grade = getLetterGrade(finalScore);
+    let statusRetake = isEligibleForRetake(finalScore, attendance) ? "Yes" : "No";
+    console.log(`
+    Student: ${name};
+    Exam: ${exam}    (weight: 60%);
+    Homework: ${homework}    (weight: 40%);
+    Bonus: ${bonus}    pts;
+    Final score: ${finalScore};
+    Grade: ${grade};
+    Attendance: ${attendance}%;
+    Retake: ${statusRetake};
+    `)
+}
+printStudentReport("Petra Novak", 74, 88, 82, 3);
